@@ -1,6 +1,6 @@
 # eslint-plugin-aws-lsp
 
-Custom ESLint rules for AWS Language Servers
+ESLint plugin for AWS LSP
 
 ## Installation
 
@@ -18,7 +18,7 @@ npm install eslint-plugin-aws-lsp --save-dev
 
 ## Usage
 
-Add `aws-lsp` to the plugins section of your `.eslintrc` configuration file:
+Add `aws-lsp` to the plugins section of your `.eslintrc` configuration file. You can omit the `eslint-plugin-` prefix:
 
 ```json
 {
@@ -28,7 +28,7 @@ Add `aws-lsp` to the plugins section of your `.eslintrc` configuration file:
 }
 ```
 
-Then configure the rules you want to use under the rules section:
+Then configure the rules you want to use under the rules section.
 
 ```json
 {
@@ -38,26 +38,51 @@ Then configure the rules you want to use under the rules section:
 }
 ```
 
+Or use the recommended configuration:
+
+```json
+{
+    "extends": [
+        "plugin:aws-lsp/recommended"
+    ]
+}
+```
+
 ## Rules
 
 ### no-workspace-folders
 
-This rule disallows the use of the `workspaceFolders` property, which can change during a user's session. Instead, use the `getAllWorkspaceFolders()` method.
+This rule disallows the use of the `workspaceFolders` property from the LSP initialization parameters, as the set of active workspace folders can change throughout a user's session. Instead, use the `getAllWorkspaceFolders()` utility method.
 
 #### Rule Details
 
 Examples of **incorrect** code for this rule:
 
 ```js
-const folders = workspace.workspaceFolders;
-const { workspaceFolders } = workspace;
-function test({ workspaceFolders }) { console.log(workspaceFolders); }
+function initialize(params) {
+    const folders = params.workspaceFolders;
+    // ...
+}
+
+function process({ workspaceFolders }) {
+    if (workspaceFolders) {
+        // ...
+    }
+}
 ```
 
 Examples of **correct** code for this rule:
 
 ```js
-const folders = workspace.getAllWorkspaceFolders();
-const { getAllWorkspaceFolders } = workspace;
-getAllWorkspaceFolders();
+function initialize(params, workspace) {
+    const folders = workspace.getAllWorkspaceFolders();
+    // ...
+}
+
+function process(params, workspace) {
+    const workspaceFolders = workspace.getAllWorkspaceFolders();
+    if (workspaceFolders) {
+        // ...
+    }
+}
 ```

@@ -1,0 +1,17 @@
+# Source files
+*.ts
+!*.d.ts
+
+# Config files
+tsconfig.json
+.eslintrc.js
+
+# Tests
+tests/
+
+# Development files
+node_modules/
+.vscode/
+.idea/
+.git/
+.gitignore

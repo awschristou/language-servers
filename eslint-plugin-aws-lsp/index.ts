@@ -3,16 +3,15 @@
  * @author AWS LSP Team
  */
 
-"use strict";
+import noWorkspaceFolders from './rules/no-workspace-folders';
 
 //------------------------------------------------------------------------------
 // Plugin Definition
 //------------------------------------------------------------------------------
 
-// import all rules in lib/rules
-module.exports = {
+export = {
     rules: {
-        "no-workspace-folders": require("./rules/no-workspace-folders"),
+        "no-workspace-folders": noWorkspaceFolders,
     },
     configs: {
         recommended: {
