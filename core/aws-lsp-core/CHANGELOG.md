@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Features
+
+* Add TypeScript compiler check to prevent usage of `workspaceFolders` property in favor of `getAllWorkspaceFolders()` method
+
 ## [0.0.9](https://github.com/aws/language-servers/compare/lsp-core/v0.0.8...lsp-core/v0.0.9) (2025-05-22)
 
 
