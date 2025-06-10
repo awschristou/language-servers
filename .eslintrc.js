@@ -3,7 +3,7 @@
 module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',
-    plugins: ['@typescript-eslint', 'unused-imports'],
+    plugins: ['@typescript-eslint', 'unused-imports', 'aws-lsp'],
     extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
     rules: {
         semi: ['error', 'never'],
@@ -13,5 +13,6 @@ module.exports = {
         '@typescript-eslint/explicit-module-boundary-types': 0,
         '@typescript-eslint/no-non-null-assertion': 0,
         'unused-imports/no-unused-imports': 'error',
+        'aws-lsp/no-workspace-folders': 'error',
     },
 }

@@ -22,6 +22,8 @@ Monorepo
     - [vscode/](client/vscode/) - Minimal vscode extension to test the language server
 - [core/](core) - contains supporting libraries used by app and server packages
     - [aws-lsp-core](core/aws-lsp-core) - core support code
+- [eslint-plugin-aws-lsp/](eslint-plugin-aws-lsp) - custom ESLint rules for AWS Language Servers
+    - [no-workspace-folders](eslint-plugin-aws-lsp/rules/no-workspace-folders.js) - rule to prevent usage of workspaceFolders property
 - [script](script) - loose scripts used to create `npm foo` commands in the root folder
 - [server](server) - packages that contain Language Server implementations
     - [aws-lsp-buildspec](server/aws-lsp-buildspec) - Language Server that wraps a JSON Schema for CodeBuild buildspec
