@@ -16,7 +16,7 @@ export const LocalProjectContextServer =
         let localProjectContextEnabled: boolean = false
 
         lsp.addInitializer((params: InitializeParams) => {
-            const workspaceFolders = workspace.getAllWorkspaceFolders() || params.workspaceFolders
+            const workspaceFolders = workspace.getAllWorkspaceFolders() || []
             localProjectContextController = new LocalProjectContextController(
                 params.clientInfo?.name ?? 'unknown',
                 workspaceFolders,

@@ -52,7 +52,7 @@ export const WorkspaceContextServer = (): Server => features => {
         }
 
         const folders = workspace.getAllWorkspaceFolders()
-        workspaceFolders = folders || params.workspaceFolders || []
+        workspaceFolders = folders || []
 
         if (!folders) {
             logging.warn(`No workspace folders set during initialization`)

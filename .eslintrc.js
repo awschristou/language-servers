@@ -1,18 +1,35 @@
-/**@type {import('eslint').Linter.Config} */
-// eslint-disable-next-line no-undef
 module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',
-    plugins: ['@typescript-eslint', 'unused-imports', 'aws-lsp'],
+    plugins: ['@typescript-eslint', 'unused-imports', 'import'],
     extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
     rules: {
-        semi: ['error', 'never'],
-        'no-constant-condition': ['error', { checkLoops: false }],
-        '@typescript-eslint/no-unused-vars': 0,
-        '@typescript-eslint/no-explicit-any': 0,
-        '@typescript-eslint/explicit-module-boundary-types': 0,
-        '@typescript-eslint/no-non-null-assertion': 0,
+        'no-restricted-properties': [
+            'error',
+            {
+                object: 'params',
+                property: 'workspaceFolders',
+                message: 'Do not use workspaceFolders directly. Use getAllWorkspaceFolders() from workspace utils instead.'
+            },
+            {
+                property: 'workspaceFolders',
+                message: 'Do not use workspaceFolders directly. Use getAllWorkspaceFolders() from workspace utils instead.'
+            }
+        ],
+        '@typescript-eslint/no-unused-vars': 'off',
         'unused-imports/no-unused-imports': 'error',
-        'aws-lsp/no-workspace-folders': 'error',
+        'unused-imports/no-unused-vars': [
+            'warn',
+            { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' }
+        ],
+        'import/order': [
+            'error',
+            {
+                groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
+                'newlines-between': 'never',
+                alphabetize: { order: 'asc', caseInsensitive: true }
+            }
+        ]
     },
+    ignorePatterns: ['**/node_modules/**', '**/out/**', '**/dist/**', '**/*.d.ts']
 }
