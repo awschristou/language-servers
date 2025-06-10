@@ -52,6 +52,32 @@ opensource-codeofconduct@amazon.com with any additional questions or comments.
 
 See the [LICENSE](LICENSE) file for our project's licensing. We will ask you to confirm the licensing of your contribution.
 
+## Custom ESLint Rules
+
+### No Workspace Folders Rule
+
+The repository includes a custom ESLint rule to prevent usage of the `workspaceFolders` property, which can change during a user's session. Instead, use the `getAllWorkspaceFolders()` method.
+
+The rule is defined in the `eslint-plugin-aws-lsp` package and is enabled by default in the repository's ESLint configuration.
+
+#### Rule Details
+
+Examples of **incorrect** code for this rule:
+
+```js
+const folders = workspace.workspaceFolders;
+const { workspaceFolders } = workspace;
+function test({ workspaceFolders }) { console.log(workspaceFolders); }
+```
+
+Examples of **correct** code for this rule:
+
+```js
+const folders = workspace.getAllWorkspaceFolders();
+const { getAllWorkspaceFolders } = workspace;
+getAllWorkspaceFolders();
+```
+
 ## Pre-Requisites + Initial Setup
 
 -   `node` version 18+

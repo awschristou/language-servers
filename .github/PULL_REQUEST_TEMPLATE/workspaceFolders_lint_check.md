@@ -1,25 +1,28 @@
 ---
-title: "Add TypeScript compiler check for workspaceFolders property"
+title: "Lint check for workspaceFolders property usage"
 labels: enhancement
-assignees: awschristou
-base: awschristou/language-servers
+assignees: ''
 ---
 
 ## Description
 
-This PR adds a TypeScript compiler check to prevent usage of the `workspaceFolders` property in favor of the `getAllWorkspaceFolders()` method. The `workspaceFolders` property is deprecated because the set of active workspace folders can change throughout a user's session.
+This PR adds a custom ESLint rule to detect and prevent usage of the `workspaceFolders` property, which can change during a user's session. Instead, developers should use the `getAllWorkspaceFolders()` method.
 
-## Changes
+## Implementation
 
-- Added a TypeScript declaration file that marks `workspaceFolders` property as `never` type, which will cause a compiler error when accessed
-- Updated documentation to explain why `workspaceFolders` should not be used
-- Added test files to demonstrate proper usage of `getAllWorkspaceFolders()`
+- Created a custom ESLint plugin (`eslint-plugin-aws-lsp`) with a rule to detect usage of `workspaceFolders`
+- Added the plugin to the project's ESLint configuration
+- Added tests to verify the rule works correctly
 
 ## Testing
 
-- Verified that accessing `workspaceFolders` property causes a compiler error
-- Verified that using `getAllWorkspaceFolders()` method works correctly
+- Ran ESLint on the codebase to verify the rule catches improper usage
+- Added unit tests for the ESLint rule
 
-## Related Issues
+## Checklist
 
-Fixes the issue described in the feature request about linting for usage of `workspaceFolders` property.
+- [ ] I have updated the documentation accordingly
+- [ ] I have added tests to cover my changes
+- [ ] All new and existing tests passed
+- [ ] My changes generate no new warnings
+- [ ] I have checked that my code follows the style guidelines of this project
