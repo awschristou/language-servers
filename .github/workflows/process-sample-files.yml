@@ -1,0 +1,87 @@
+name: Process sample files after creation
+
+on:
+    workflow_run:
+        workflows: ['Create sample files'] # Name from temp-make-files.yml
+        types:
+            - completed
+        branches:
+            - foo
+
+jobs:
+    process-artifacts:
+        runs-on: ubuntu-latest
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Download all platform artifacts
+              uses: actions/download-artifact@v4
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  run-id: ${{ github.event.workflow_run.id }}
+                  path: ./downloaded-artifacts
+
+            - name: List downloaded artifacts
+              run: |
+                  echo "Downloaded artifacts from temp-make-files workflow:"
+                  find ./downloaded-artifacts -type f | sort
+                  echo ""
+                  echo "Directory structure:"
+                  tree ./downloaded-artifacts || ls -la ./downloaded-artifacts
+
+            - name: Process platform-specific files
+              run: |
+                  echo "Processing platform-specific sample files..."
+
+                  # The artifacts will be organized like this:
+                  # ./downloaded-artifacts/linux-arm64/linux-arm64.txt
+                  # ./downloaded-artifacts/linux-x64/linux-x64.txt
+                  # ./downloaded-artifacts/mac-arm64/mac-arm64.txt
+                  # ./downloaded-artifacts/mac-x64/mac-x64.txt
+                  # ./downloaded-artifacts/win-x64/win-x64.txt
+
+                  for platform in linux-arm64 linux-x64 mac-arm64 mac-x64 win-x64; do
+                    if [ -d "./downloaded-artifacts/$platform" ]; then
+                      echo "Processing $platform artifacts:"
+                      ls -la "./downloaded-artifacts/$platform/"
+                      
+                      # Read and display the content of the platform file
+                      if [ -f "./downloaded-artifacts/$platform/$platform.txt" ]; then
+                        echo "Content of $platform.txt:"
+                        cat "./downloaded-artifacts/$platform/$platform.txt"
+                        echo ""
+                      fi
+                      
+                      # Add your custom processing logic here
+                      # For example:
+                      # - Validate the files
+                      # - Transform the content
+                      # - Upload to S3
+                      # - Deploy somewhere
+                      # - etc.
+                    fi
+                  done
+
+            - name: Show workflow run information
+              run: |
+                  echo "Triggered by workflow: ${{ github.event.workflow_run.name }}"
+                  echo "Workflow run ID: ${{ github.event.workflow_run.id }}"
+                  echo "Head SHA: ${{ github.event.workflow_run.head_sha }}"
+                  echo "Branch: ${{ github.event.workflow_run.head_branch }}"
+
+            - name: Create summary artifact (optional)
+              run: |
+                  mkdir -p ./summary
+                  echo "Processing completed at $(date)" > ./summary/processing-summary.txt
+                  echo "Processed platforms:" >> ./summary/processing-summary.txt
+                  find ./downloaded-artifacts -name "*.txt" -exec basename {} \; | sort >> ./summary/processing-summary.txt
+
+            - name: Upload processing summary
+              uses: actions/upload-artifact@v4
+              with:
+                  name: processing-summary
+                  path: ./summary/
+                  if-no-files-found: warn
