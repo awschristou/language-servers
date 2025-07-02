@@ -6,7 +6,7 @@ permissions:
 
 on:
     workflow_run:
-        workflows: ['Create sample files']
+        workflows: [Create sample files]
         types:
             - completed
 
