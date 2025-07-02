@@ -6,7 +6,7 @@ permissions:
 
 on:
     workflow_run:
-        workflows: ['Create sample files'] # Name from temp-make-files.yml
+        workflows: ['Create sample files']
         types:
             - completed
 
