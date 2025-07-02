@@ -5,8 +5,8 @@ on:
         workflows: ['Create sample files'] # Name from temp-make-files.yml
         types:
             - completed
-        branches:
-            - tempchain-release-actions
+        # branches:
+        #     - tempchain-release-actions
 
 jobs:
     process-artifacts:
