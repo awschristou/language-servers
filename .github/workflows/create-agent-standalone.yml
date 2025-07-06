@@ -2,7 +2,7 @@ name: Create agent-standalone bundles
 
 on:
     push:
-        branches: [main, feature/*]
+        branches: [main, feature/*, release/agentic/*]
 
 jobs:
     build:
@@ -12,6 +12,7 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v4
               with:
+                  ref: ${{ github.ref }}
                   lfs: true
 
             # - name: Setup Node.js
@@ -41,7 +42,6 @@ jobs:
                   done
                   mkdir -p "_artifacts/clients"
                   unzip _artifacts/clients.zip -d _artifacts/clients
-
 
             # GitHub Actions zips the archive, so we upload the folder used to
             # produce clients.zip. Otherwise we have a clients.zip artifact
